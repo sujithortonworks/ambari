@@ -1,0 +1,18 @@
+Add additional Standby Resourcemanager
+curl --user admin:spotluri -H "X-Requested-By:ambari" -X POST "http://c176-node1:8080/api/v1/clusters/c176/hosts/c176-node4.ha264.com/host_components/RESOURCEMANAGER"
+
+curl -s -H "X-Requested-By:ambari" --user admin:spotluri -i -X POST -d '{ "Credential" : { "principal" : "admin/admin", "key" : "hadoop", "type" : "temporary" } }' http://c176-node1:8080/api/v1/clusters/c176/credentials/kdc.admin.credential
+
+
+curl --user admin:spotluri -H "X-Requested-By:ambari" -i -X PUT -d '{"HostRoles": {"state": "INSTALLED"}}' "http://c176-node1:8080/api/v1/clusters/c176/hosts/c176-node4.ha264.com/host_components/RESOURCEMANAGER"
+
+
+yarn.resourcemanager.ha.rm-ids=rm1,rm2,rm3
+
+yarn.resourcemanager.hostname.rm3=c176-node4.ha264.com
+yarn.resourcemanager.webapp.address.rm3=c176-node4.ha264.com:8088
+yarn.resourcemanager.webapp.https.address.rm3=c176-node4.ha264.com:8090
+
+Restart All on YARN
+ambari-server restart in order for Ambari to get metrics of new RM - 
+and then rest of the services
